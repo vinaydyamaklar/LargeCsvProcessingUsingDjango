@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&w)na9%0on(_+#$1#h@52ndc=+$&k3hp01pv^7=%f_ru%$$r2k'
+SECRET_KEY = '_um%jk54_qyz=q+^phx0=$z)yzknhb&t-&u%-h0r(7%st3&^r2'
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.user_account',
 ]
 
 MIDDLEWARE = [
@@ -130,33 +129,18 @@ DOMAIN_URL = 'http://127.0.0.1:8000/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# https://github.com/ottoyiu/django-cors-headers/
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = (
-    'x-requested-with',
-    'content-type',
-    'accept',
-    'origin',
-    'authorization',
-    'sessionid',
-)
-CORS_EXPOSE_HEADERS = (
-    'set-cookie',
-    'sessionid',
-)
+# celery broker
+CELERY_BROKER_URL = 'amqp://localhost:5672'
 
-# Accepted input types
-VALID_IMAGE_FILE_TYPES = ['JPEG', 'PNG', 'JPG']
 
 ###########################
 # ENVIRONMENT DETAILS
 ###########################
 PROD = 'PROD'
-DEVELOPERS = 'DEVELOPERS'
-DEPLOYMENT_ENVS = [PROD, DEVELOPERS]
+LOCAL = 'LOCAL'
+DEPLOYMENT_ENVS = [PROD, LOCAL]
 
-ENVIRONMENT = os.environ.get('WOOFY_EMOJIDATA_ENV', DEVELOPERS)
+ENVIRONMENT = os.environ.get('EMPROTO_CSV_ENV', LOCAL)
 
 if ENVIRONMENT not in DEPLOYMENT_ENVS:
     print(ENVIRONMENT)
@@ -167,6 +151,6 @@ if ENVIRONMENT not in DEPLOYMENT_ENVS:
 
 if ENVIRONMENT == PROD:
     from main.settings.prod import *
-elif ENVIRONMENT == DEVELOPERS:
+elif ENVIRONMENT == LOCAL:
     from main.settings.local import *
 

@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block page_title %}
+    Upload
+    <span id="file_name" style="display: none;">
+        <!-- File name will be shown here -->
+    </span>
+{% endblock %}
+
+{% block body_block %}
+    <div class="ht-250 bg-gray-200 d-flex align-items-center justify-content-center">
+        <form id="upload_form" action="javascript:processFile();" method="post">
+            <input type="file" name="file-3[] " accept=".csv" id="file_input" class="inputfile">
+            <label for="file_input" class="if-style-1 if-primary">
+                <span class="icon-wrapper">
+                    <i class="icon ion-ios-upload-outline"></i>
+                </span><!-- icon-wrapper -->
+                <span>Choose a csv file to process</span>
+                <br><br>
+                <input id="submit_btn" class="btn btn-success" type="submit" value="Upload" disabled>
+            </label>
+        </form>
+    </div><!-- ht-200 -->
+
+{% endblock %}

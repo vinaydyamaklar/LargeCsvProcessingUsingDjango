@@ -10,9 +10,9 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'woofy_emoji_lcl_db',
-        'USER': 'woofy_emoji_lcl_usr',
-        'PASSWORD': 'woofy_emoji_lcl',
+        'NAME': 'emproto_csv_db',
+        'USER': 'csv_user',
+        'PASSWORD': 'csv_pwd',
         'HOST': 'localhost',
         'PORT': '5432',
     }
