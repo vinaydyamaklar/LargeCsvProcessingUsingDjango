@@ -4,6 +4,7 @@ import os
 import json
 from main.settings.settings import BASE_DIR
 from .tasks import process_csv_to_persist
+from .models import CsvFile
 
 # Create your views here.
 
@@ -26,7 +27,8 @@ class UploadView(View):
 
         # calling worker if the last chunk is uploaded successfully
         if json.loads(request.POST['isLastChunk']):
-            process_csv_to_persist(upload_dir_name)
+            csf = CsvFile.objects.create(status='processing')
+            process_csv_to_persist(upload_dir_name, csf)
         return HttpResponseRedirect(reverse('home'))
 
 

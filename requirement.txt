@@ -3,3 +3,4 @@ django-cleanup==2.1.0
 django-widget-tweaks==1.4.3
 celery==4.3.0
 djongo==1.2.36
+djangotoolbox==1.8.0

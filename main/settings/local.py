@@ -12,7 +12,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'large_csv',
         'USER': 'csv_user',
-        'PASSWORD': 'csv_kjniuyn!kn',
+        'PASSWORD': 'your_pwd',
         'AUTH_SOURCE': 'large_csv',
         'HOST': 'localhost',
         'PORT': 27017,
