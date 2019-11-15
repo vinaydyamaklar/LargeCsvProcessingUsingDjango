@@ -10,7 +10,7 @@ An admin dashboard can be opening by appending **/admin** at the end of the doma
 * **admin.py:** All Django admin related settings.
 
 #### Standards
-* PEP8 compatible coding style.* Doc strings for all the modules and their members. These doc strings are read by Sphinx and Swagger to create documentations.
+* PEP8 compatible coding style.*
 
 ### Tech Stack
 Following is the tech stack being used for main project:
@@ -19,36 +19,52 @@ Following is the tech stack being used for main project:
 * [Celery 4.3.0] - As Job queue
 * [Rabbit Mq] - As message broker
 
-## Postgres DB Setup
+## Mongo DB Setup
 ```
-sudo apt-get update
-sudo apt-get install python-pip python-dev libpq-dev postgresql
+# Install mongo DB by going through below link
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 
-# During the Postgres installation, an operating system user named postgres was created to correspond to the postgres PostgreSQL administrative user. We need to change to this user to perform administrative tasks
-sudo su - postgres
+# You can also install MongoDB as specified below
 
-# You should now be in a shell session for the postgres user. Log into a Postgres session by typing
-psql
+# 1. Install mongodb:
+sudo apt-get install mongodb
 
-# Create database and user
-CREATE DATABASE emproto_csv_db;
-CREATE USER csv_user WITH PASSWORD 'your_pwd';
+# 2. Unlock the mongodb
+sudo rm /var/lib/mongodb/mongod.lock
+sudo mongod --repair
 
-# Setting encodings to UTF-8, timezones and transaction isolations
-ALTER ROLE csv_user SET client_encoding TO 'utf8';
-ALTER ROLE csv_user SET default_transaction_isolation TO 'read committed';
-ALTER ROLE csv_user SET timezone TO 'UTC';
+# 3. Enable and start the service
+sudo systemctl enable mongodb
+sudo service mongodb start
 
-# Grant all permissions for the created user
-GRANT ALL PRIVILEGES ON DATABASE emproto_csv_db TO csv_user;
+# 4. Quick lookups:
+sudo systemctl start mongodb # start mongodb server
+sudo systemctl status mongodb # get the status of mongodb server
+sudo systemctl enable mongodb # enable for auto restart on boot
+sudo systemctl restart mongodb # restart mongodb server
+sudo systemctl stop mongodb # stop mongodb server
+sudo systemctl disable mongodb # disable auto start on boot for mongodb server
 
-# Exit
-\q
+
+# After installation, enter to shell of mongoDB with below command
+mongo
+
+# In mongo shell create database
+use large_csv
+
+# Create User
+db.createUser({user:"csv_user",pwd:"your_pwd",roles:[{role:"dbOwner",db:"large_csv"}]})
+
+# Exit mongo shell
+quit() or Ctrl+C
 exit
 
+# In the environment file(local.py/prod.py)
+update the Database details
 ```
-## Project **Setup**
 
+
+## Project **Setup**
 
 ### Installing RabbitMq
 * sudo apt-get install -y erlang
