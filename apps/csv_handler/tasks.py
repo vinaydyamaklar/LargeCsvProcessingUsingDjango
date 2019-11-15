@@ -21,7 +21,7 @@ def process_csv_to_persist(dir_name, csf):
 
     input_file = open(file_name, "r+")
     reader_file = csv.reader(input_file)
-    total_records = sum(1 for row in reader_file) - 1
+    total_records = sum(1 for row in reader_file)
     failed_records = row_count - total_records
 
     csv_records = []
