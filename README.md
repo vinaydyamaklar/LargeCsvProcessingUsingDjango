@@ -1,4 +1,4 @@
-# LargeCsvProcessingUsingDjango
+# Large Csv file upload & Processing Using Django
 csv_kjniuyn!kn
 An admin dashboard can be opening by appending **/admin** at the end of the domain URL.
 
