@@ -1,5 +1,4 @@
 # Large Csv file upload & Processing Using Django
-csv_kjniuyn!kn
 An admin dashboard can be opening by appending **/admin** at the end of the domain URL.
 
 #### Structure
@@ -86,10 +85,10 @@ sudo pip install --upgrade pip
 virtualenv --python=python3 venv
 source venv/bin/activate
 
-mkdir flyer && cd flyer
-git clone https://gitlab.com/zignite/clients/flyer/flyer-dashboard.git
+mkdir large_csv && cd large_csv
+git clone https://github.com/vinaydyamaklar/LargeCsvProcessingUsingDjango.git
 
-cd dashboard
+cd LargeCsvProcessingUsingDjango
 pip install -r requirements.txt
 
 
@@ -99,11 +98,6 @@ python manage.py makemigrations
 python manage.py collectstatic
 python manage.py migrate
 python manage.py runserver
-
+Nsetting
 admin/flyeradmin34
-```
-
-### Server
-```bash
-157.175.50.39:8001
 ```
