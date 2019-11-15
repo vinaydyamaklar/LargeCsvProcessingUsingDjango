@@ -50,8 +50,6 @@ def read_csv(file_name, fields, rows, row_count):
             # extracting each data row one by one
             i = 0
             for row in csv_reader:
-                if row_count == 10:
-                    raise Exception
                 if i == row_count:
                     rows.append(row)
                     row_count += 1
