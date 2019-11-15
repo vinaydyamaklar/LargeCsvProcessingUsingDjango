@@ -9,12 +9,13 @@ DEBUG = False
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '',
-        'USER': 'postgres',
-        'PASSWORD': '',
+        'ENGINE': 'djongo',
+        'NAME': 'large_csv_prod',
+        'USER': 'user_name_here',
+        'PASSWORD': 'pwd_here',
+        'AUTH_SOURCE': 'large_csv_prod',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': 27017,
     }
 }
 
