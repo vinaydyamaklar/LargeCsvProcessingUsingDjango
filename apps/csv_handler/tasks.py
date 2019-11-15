@@ -47,6 +47,9 @@ def read_csv(file_name, fields, rows, row_count):
             # creating a csv reader object
             csv_reader = csv.reader(csv_file)
 
+            # extracting field name
+            fields = next(csv_reader)
+
             # extracting each data row one by one
             i = 0
             for row in csv_reader:
