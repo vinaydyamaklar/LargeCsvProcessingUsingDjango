@@ -17,12 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from main.settings.settings import MEDIA_URL, MEDIA_ROOT
-from apps.csv_handler.views import UploadView, HistoryView
+from apps.csv_handler.views import UploadView, JobsView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', UploadView.as_view(), name="home"),
+    path('', JobsView.as_view(), name="home"),
     path('upload/', UploadView.as_view(), name="upload"),
-    path('history/', HistoryView.as_view(), name="history"),
+    path('jobs/', JobsView.as_view(), name="jobs"),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)

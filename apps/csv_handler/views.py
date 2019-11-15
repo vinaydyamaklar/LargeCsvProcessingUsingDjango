@@ -1,5 +1,6 @@
 from django.views.generic import View
 from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.http import JsonResponse
 import os
 import json
 from main.settings.settings import BASE_DIR
@@ -29,13 +30,16 @@ class UploadView(View):
         if json.loads(request.POST['isLastChunk']):
             csf = CsvFile.objects.create(status='processing')
             process_csv_to_persist(upload_dir_name, csf)
-        return HttpResponseRedirect(reverse('home'))
+            job_id = "JOB-"+str(csf.pk)
+            return JsonResponse({"message": "finished", "job": job_id, "status": "OK"})
+        return JsonResponse({"message": "not_finished", "status": "OK"})
 
 
-class HistoryView(View):
+class JobsView(View):
 
     def get(self, request, *args, **kwargs):
         # some logic
         context = {}
-        return render(request, 'history.html', context)
-
+        jobs_created = CsvFile.objects.all()
+        context['jobs'] = jobs_created
+        return render(request, 'jobs.html', context)

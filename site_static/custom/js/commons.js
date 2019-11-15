@@ -88,6 +88,13 @@ function send(file, start, end) {
             }
         }
     } else {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                var response = JSON.parse(xhr.responseText);
+                var msg = "Successful Job ID=" + response.job
+                $("#file_name").html(msg)
+            }
+        }
         isLastChunk = true;
         console.log('Upload complete');
     }

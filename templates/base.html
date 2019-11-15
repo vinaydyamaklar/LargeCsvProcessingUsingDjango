@@ -18,6 +18,8 @@
     <!-- Bracket CSS -->
     <link rel="stylesheet" href="{% static 'theme/css/bracket.css' %}">
     <link rel="stylesheet" href="{% static 'theme/css/bracket.oreo.css' %}">
+    <link href="{% static 'theme/js/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'theme/js/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">
   </head>
 
   <body>
@@ -34,9 +36,9 @@
           </a><!-- br-menu-link -->
         </li><!-- br-menu-item -->
         <li class="br-menu-item">
-          <a href="{% url 'history' %}" class="br-menu-link">
+          <a href="{% url 'jobs' %}" class="br-menu-link">
             <i class="menu-item-icon icon ion-clock tx-24"></i>
-            <span class="menu-item-label">History</span>
+            <span class="menu-item-label">Jobs & Job status</span>
           </a><!-- br-menu-link -->
         </li><!-- br-menu-item -->
       </ul><!-- br-sideleft-menu -->
@@ -506,10 +508,28 @@
     <script src="{% static 'theme/js/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
     <script src="{% static 'theme/js/moment/min/moment.min.js' %}"></script>
     <script src="{% static 'theme/js/peity/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'theme/js/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'theme/js/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+    <script src="{% static 'theme/js/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'theme/js/datatables.net-responsive-dt/js/responsive.dataTables.min.js' %}"></script>
 
     <script src="{% static 'theme/js/bracket/bracket.js' %}"></script>
 
     <!--Custom js-->
     <script src="{% static 'custom/js/commons.js' %}"></script>
+    <script>
+      $(function(){
+        'use strict';
+
+        $('#datatable1').DataTable({
+          responsive: false,
+          language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+          }
+        });
+      });
+    </script>
+
   </body>
 </html>

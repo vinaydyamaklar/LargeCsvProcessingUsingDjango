@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Jobs
+{% endblock %}
+
+{% block body_block %}
+
+<div class="table-wrapper">
+    <table id="datatable1" class="table display responsive nowrap">
+        <thead>
+        <tr>
+            <th class="wd-15p">Job ID</th>
+            <th class="wd-15p">Job status</th>
+            <th class="wd-20p">Total records</th>
+            <th class="wd-20p">Failed records</th>
+            <th class="wd-15p">Download</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>JOB-{{job.pk}}</td>
+                    <td>{{job.status}}</td>
+                    <td>{{job.total_records}}</td>
+                    <td>{{job.failed_records}}</td>
+                    <td>Coming Soon</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div><!-- table-wrapper -->
+
+
+{% endblock %}
