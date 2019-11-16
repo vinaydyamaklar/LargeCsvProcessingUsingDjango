@@ -83,16 +83,25 @@ function send(file, start, end) {
     if (end < size) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == XMLHttpRequest.DONE) {
-                console.log('Done Sending Chunk');
-                send(file, start + sliceSize, start + (sliceSize * 2));
+                var response = JSON.parse(xhr.responseText);
+                if(response.status == "OK"){
+                    console.log('Done Sending Chunk');
+                    send(file, start + sliceSize, start + (sliceSize * 2));
+                }else{
+                    $("#file_name").html(response.message);
+                }
             }
         }
     } else {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 var response = JSON.parse(xhr.responseText);
-                var msg = "Successful Job ID=" + response.job
-                $("#file_name").html(msg)
+                if(response.status == "OK"){
+                    var msg = "Successful Job ID=" + response.job
+                    $("#file_name").html(msg);
+                }else{
+                    $("#file_name").html(response.message);
+                }
             }
         }
         isLastChunk = true;
