@@ -13,23 +13,68 @@ Jobs
             <th class="wd-15p">Job ID</th>
             <th class="wd-15p">Job status</th>
             <th class="wd-20p">Total records</th>
+            <th class="wd-20p">Processed records</th>
             <th class="wd-20p">Failed records</th>
             <th class="wd-15p">Download</th>
         </tr>
         </thead>
         <tbody>
-            {% for job in jobs %}
-                <tr>
-                    <td>JOB-{{job.pk}}</td>
-                    <td>{{job.status}}</td>
-                    <td>{{job.total_records}}</td>
-                    <td>{{job.failed_records}}</td>
-                    <td>Coming Soon</td>
-                </tr>
-            {% endfor %}
+        {% for job in jobs %}
+        <tr>
+            <td>JOB-{{job.pk}}</td>
+            <td>{{job.status}}</td>
+            <td class="tx-bold tx-inverse">{{job.total_records}}</td>
+            <td class="tx-bold tx-16 tx-info">{{job.processed_records}}</td>
+            <td class="tx-danger">{{job.failed_records}}</td>
+            <td>
+                <a href="#" onclick="askRangeToDownload('{{job.pk}}', '{{job.processed_records}}')"
+                   data-toggle="modal" data-target="#askRangeModel"
+                   class="modal-effect btn btn-primary btn-block"
+                   data-effect="effect-rotate-bottom">
+                    <i class="fa fa-download"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div><!-- table-wrapper -->
+
+<div id="askRangeModel" class="modal fade">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content bd-0 tx-14">
+            <div class="modal-header pd-x-20">
+                <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Provide Range</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="form-layout">
+                <form action="javascript:downloadRecords();" method="post">
+                    <div class="modal-body">
+                        <div class="col-lg-16">
+                            <label class="col-sm-16s form-control-label">Record from: <span class="tx-danger">*</span></label>
+                            <div class="form-group">
+                                <input type="number" id="downloadFromRange" min="0" required class="form-control" placeholder="Record from">
+                            </div>
+                        </div><!-- row -->
+                        <div class="col-lg-16">
+                            <label class="col-sm-16 form-control-label">Record to: <span class="tx-danger">*</span></label>
+                            <div class="form-group">
+                                <input type="number" id="downloadRangeTo" min="0" required class="form-control" placeholder="Record to">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="hdnDownloadJobId" value="" required>
+                        <input type="hidden" id="hdnDownloadProcessedRecs" value="" required>
+                        <button type="submit" class="btn btn-primary btn-block">Download &nbsp;<i class="fa fa-download"></i></button>
+                    </div>
+                </form>
+            </div><!-- form-layout -->
+        </div>
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
 
 
 {% endblock %}

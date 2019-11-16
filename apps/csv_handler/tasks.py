@@ -1,6 +1,6 @@
 from celery import shared_task
 import csv, os
-from apps.csv_handler.models import CsvFile, CsvRecords
+from apps.csv_handler.models import CsvRecords
 
 
 @shared_task
@@ -22,7 +22,8 @@ def process_csv_to_persist(dir_name, csf):
     input_file = open(file_name, "r+")
     reader_file = csv.reader(input_file)
     total_records = sum(1 for row in reader_file) - 1
-    failed_records = row_count - total_records
+    failed_records = total_records - len(rows)
+    processed_records = total_records - failed_records
 
     csv_records = []
     for row in rows:
@@ -31,6 +32,7 @@ def process_csv_to_persist(dir_name, csf):
     CsvRecords.objects.bulk_create(csv_records)
     csf.total_records = total_records
     csf.failed_records = failed_records
+    csf.processed_records = processed_records
     csf.status = 'finished'
     csf.save()
 
@@ -53,7 +55,8 @@ def read_csv(file_name, fields, rows, row_count):
             # extracting each data row one by one
             i = 0
             for row in csv_reader:
-                if i == row_count:
+                uid = row[0]
+                if i == row_count and uid not in [r[0] for r in rows]:
                     rows.append(row)
                     row_count += 1
                 i += 1

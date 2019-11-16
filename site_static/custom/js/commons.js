@@ -112,3 +112,20 @@ function send(file, start, end) {
     xhr.setRequestHeader("X-CSRFToken", $("#hiddenCsrf").val());
     xhr.send(formdata);
 }
+
+
+/*
+* This method shows the popup which collects range for downloading & sets some hdn controls
+*/
+
+function askRangeToDownload(jobId, processedRecords){
+    $("#hdnDownloadJobId").val(jobId);
+    $("#hdnDownloadProcessedRecs").val(processedRecords);
+}
+
+/*
+* This method calls download method
+*/
+function downloadRecords(){
+    alert("Download functionality will be coming soon!");
+}
