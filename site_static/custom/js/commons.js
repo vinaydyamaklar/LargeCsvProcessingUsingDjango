@@ -41,7 +41,7 @@ $(document).ready(function() {
 });
 
 var size = 0;
-var sliceSize = 1048576;  // 1MB= 1048576, 10MB=10485760 Send 10MB Chunks
+var sliceSize = 10485760;  // 1MB= 1048576, 10MB=10485760 Send 10MB Chunks
 var uploadId = null;
 var isLastChunk = false;
 
