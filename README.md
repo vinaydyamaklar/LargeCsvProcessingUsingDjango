@@ -73,6 +73,11 @@ update the Database details
 * **Enable:** systemctl enable rabbitmq-server
 * **Start:** systemctl start rabbitmq-server
 * **Status check:** systemctl status rabbitmq-server
+
+#### Celery Commands
+* **Get running tasks info:** celery -A main worker -l info
+* **Clear task queue:**  celery -A main purge
+
 ```
 sudo apt-get update
 sudo apt-get install python-pip python-dev python3.6-dev git

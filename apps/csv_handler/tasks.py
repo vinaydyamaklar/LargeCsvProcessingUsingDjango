@@ -1,31 +1,34 @@
-from celery import shared_task, task
+from celery import shared_task
+from celery.task import task
 import csv
 import os
-import codecs
+import json
 from apps.csv_handler.models import CsvRecords, CsvFile
 
 
-@task
-def generate_file(job_id, start_from, start_to):
-    filename = "%s.csv" % generate_file.request.id
-    file = CsvFile.objects.get(id=job_id)
-    records = CsvRecords.objects.filter(file=file)
-    with open("%s%s" % ("/path/to/export/", filename), "w+") as f:
-        writer = csv.writer(f, dialect=csv.excel)
+@shared_task(name='Generate downloadable csv file')
+def generate_file(job_id, temp_dir, filename, start_from, end_at):
+    job = CsvFile.objects.filter(pk=int(job_id)).first()
 
-        # for i in qs:
-        #     writer.writerow([i.foo, i.bar, i.baz, ...])
+    csv_records = CsvRecords.objects.filter(file=job, range__gte=start_from, range__lte=end_at)
+    with open(filename, "w+", encoding="utf8", errors='ignore') as f:
+        writer = csv.writer(f, dialect=csv.excel)
+        fields = json.loads(job.fields_str)
+        writer.writerow(fields)
+        for rec in csv_records:
+            rec = json.loads(rec.record_str)
+            writer.writerow(rec)
 
     return filename
 
 
-@shared_task
+@shared_task(name='Read uploaded CSV, process & persist')
 def process_csv_to_persist(dir_name, csf):
     file_name = dir_name + '/file.csv'
     row_count = 0
     fields = []
     rows = []
-
+    csf = CsvFile.objects.filter(pk=csf).first()
     while True:
         is_done, fields, rows, row_count = read_csv(file_name, fields, rows, row_count)
         if is_done:
@@ -46,7 +49,7 @@ def process_csv_to_persist(dir_name, csf):
     for row in rows:
         u_id = row[0] + str(csf.pk)
         pos += 1
-        csv_records.append(CsvRecords(u_id=u_id, range=pos, record_str=str(row), file=csf))
+        csv_records.append(CsvRecords(u_id=u_id, range=pos, record_str=json.dumps(row), file=csf))
 
     # updating DB
     try:
@@ -54,12 +57,14 @@ def process_csv_to_persist(dir_name, csf):
         csf.total_records = total_records
         csf.failed_records = failed_records
         csf.processed_records = processed_records
+        csf.fields_str = json.dumps(fields)
         csf.status = 'finished'
         csf.save()
     except Exception:
         csf.total_records = total_records
         csf.failed_records = 0
         csf.processed_records = 0
+        csf.fields_str = json.dumps([])
         csf.status = 'error'
         csf.save()
         pass
@@ -78,7 +83,8 @@ def read_csv(file_name, fields, rows, row_count):
             csv_reader = csv.reader(csv_file)
 
             # extracting field name
-            fields = next(csv_reader)
+            if row_count == 0:
+                fields = next(csv_reader)
 
             # extracting each data row one by one
             i = 0
@@ -92,3 +98,10 @@ def read_csv(file_name, fields, rows, row_count):
         return True, fields, rows, row_count
     except Exception:
         return False, fields, rows, row_count
+
+
+def write_csv(file_name, records):
+    try:
+        pass
+    except Exception:
+        pass

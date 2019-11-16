@@ -10,7 +10,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'admin'
+        'NAME': 'large_csv'
     }
 }
 

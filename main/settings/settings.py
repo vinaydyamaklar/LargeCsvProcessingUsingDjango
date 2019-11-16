@@ -25,8 +25,6 @@ SECRET_KEY = '_um%jk54_qyz=q+^phx0=$z)yzknhb&t-&u%-h0r(7%st3&^r2'
 
 ALLOWED_HOSTS = ['*']
 
-# AUTH_USER_MODEL = '' TODO: update it with the User account model
-
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 
@@ -131,7 +129,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # celery broker
-CELERY_BROKER_URL = 'amqp://localhost:5672'
+CELERY_BROKER_URL = 'amqp://localhost'
 
 
 ###########################

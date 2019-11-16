@@ -9,6 +9,7 @@ class CsvFile(models.Model):
     total_records = models.IntegerField(default=0)
     processed_records = models.IntegerField(default=0)
     failed_records = models.IntegerField(default=0)
+    fields_str = models.CharField(max_length=10000)
 
 
 class CsvRecords(models.Model):

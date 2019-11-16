@@ -132,9 +132,54 @@ function askRangeToDownload(jobId, processedRecords){
     $("#hdnDownloadProcessedRecs").val(processedRecords);
 }
 
+function poll_to_download(task_id){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/jobs/?taskId='+task_id, true);
+    xhr.setRequestHeader("X-CSRFToken", $("#hiddenCsrf").val());
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            var resp = JSON.parse(xhr.responseText);
+            if(resp.status == 'OK'){
+                if(resp.message == 'ready'){
+                    console.log("Ready")
+                }else{
+                    setTimeout(function(){
+                        poll_to_download(resp.task_id);
+                    }, 5000);
+                }
+            }
+        }
+    }
+}
+
 /*
 * This method calls download method
 */
 function downloadRecords(){
-    alert("Download functionality will be coming soon!");
+    var rangeFrom = $('#downloadFromRange').val();
+    var rangeTo = $('#downloadTillRange').val();
+    var jobId = $('#hdnDownloadJobId').val();
+    var processedRecords = $('#hdnDownloadProcessedRecs').val();
+    if(rangeFrom <= rangeTo){
+        var formdata = new FormData();
+        var xhr = new XMLHttpRequest();
+
+        formdata.append('rangeFrom', rangeFrom);
+        formdata.append('rangeTo', rangeTo);
+        formdata.append('jobId', jobId);
+
+        xhr.open('POST', '/jobs/', true);
+        xhr.setRequestHeader("X-CSRFToken", $("#hiddenCsrf").val());
+        xhr.send(formdata);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                var resp = JSON.parse(xhr.responseText);
+                if(resp.status == 'OK'){
+                    poll_to_download(resp.task_id);
+                }
+            }
+        }
+    }
+
 }
