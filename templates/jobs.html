@@ -27,12 +27,21 @@ Jobs
             <td class="tx-bold tx-16 tx-info">{{job.processed_records}}</td>
             <td class="tx-danger">{{job.failed_records}}</td>
             <td>
-                <a href="#" onclick="askRangeToDownload('{{job.pk}}', '{{job.processed_records}}')"
-                   data-toggle="modal" data-target="#askRangeModel"
-                   class="modal-effect btn btn-primary btn-block"
-                   data-effect="effect-rotate-bottom">
-                    <i class="fa fa-download"></i>
-                </a>
+                {% if job.status == 'finished' %}
+                    <a href="#" onclick="askRangeToDownload('{{job.pk}}', '{{job.processed_records}}')"
+                       data-toggle="modal" data-target="#askRangeModel"
+                       class="modal-effect btn btn-primary btn-block"
+                       data-effect="effect-rotate-bottom">
+                        <i class="fa fa-download"></i>
+                    </a>
+                {%else%}
+                    <a href="#" aria-disabled="true"
+                       data-toggle="modal" data-target="#askRangeModel"
+                       class="modal-effect btn btn-primary btn-block disabled"
+                       data-effect="effect-rotate-bottom">
+                        <i class="fa fa-download"></i>
+                    </a>
+                {%endif%}
             </td>
         </tr>
         {% endfor %}
