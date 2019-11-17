@@ -164,7 +164,7 @@ function downloadRecords(){
     var rangeTo = $('#downloadTillRange').val();
     var jobId = $('#hdnDownloadJobId').val();
     var processedRecords = $('#hdnDownloadProcessedRecs').val();
-    if(rangeFrom <= rangeTo && (processedRecords > rangeFrom)){
+    if(rangeFrom <= rangeTo && (processedRecords >= rangeFrom)){
         var formdata = new FormData();
         var xhr = new XMLHttpRequest();
 
