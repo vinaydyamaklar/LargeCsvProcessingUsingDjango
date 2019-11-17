@@ -164,7 +164,7 @@ function downloadRecords(){
     var rangeTo = $('#downloadTillRange').val();
     var jobId = $('#hdnDownloadJobId').val();
     var processedRecords = $('#hdnDownloadProcessedRecs').val();
-    if(rangeFrom <= rangeTo){
+    if(rangeFrom <= rangeTo && (rangeFrom >> processedRecords)){
         var formdata = new FormData();
         var xhr = new XMLHttpRequest();
 
@@ -183,6 +183,9 @@ function downloadRecords(){
                 }
             }
         }
+    }else{
+        $(".close").trigger('click');
+        alert("Please provide valid ranges to download");
     }
 
 }
