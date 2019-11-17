@@ -132,7 +132,7 @@ function askRangeToDownload(jobId, processedRecords){
     $("#hdnDownloadProcessedRecs").val(processedRecords);
 }
 
-function poll_to_download(task_id){
+function pollToDownload(task_id){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/jobs/?taskId='+task_id, true);
     xhr.setRequestHeader("X-CSRFToken", $("#hiddenCsrf").val());
@@ -142,10 +142,13 @@ function poll_to_download(task_id){
             var resp = JSON.parse(xhr.responseText);
             if(resp.status == 'OK'){
                 if(resp.message == 'ready'){
-                    console.log("Ready")
+                    $(".close").trigger('click');
+                    var file_url = "/jobs/?filename="+resp.filename;
+                    $("#file_name").html("If your download doesn't start automatically, please click <a href='"+file_url+"'>here</a>.");
+                    window.location.href = file_url;
                 }else{
                     setTimeout(function(){
-                        poll_to_download(resp.task_id);
+                        pollToDownload(resp.task_id);
                     }, 5000);
                 }
             }
@@ -176,7 +179,7 @@ function downloadRecords(){
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 var resp = JSON.parse(xhr.responseText);
                 if(resp.status == 'OK'){
-                    poll_to_download(resp.task_id);
+                    pollToDownload(resp.task_id);
                 }
             }
         }

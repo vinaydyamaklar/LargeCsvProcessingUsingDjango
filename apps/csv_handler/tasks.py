@@ -6,8 +6,8 @@ import json
 from apps.csv_handler.models import CsvRecords, CsvFile
 
 
-@shared_task(name='Generate downloadable csv file')
-def generate_file(job_id, temp_dir, filename, start_from, end_at):
+@task(name='Generate downloadable csv file')
+def generate_file(job_id, filename, start_from, end_at):
     job = CsvFile.objects.filter(pk=int(job_id)).first()
 
     csv_records = CsvRecords.objects.filter(file=job, range__gte=start_from, range__lte=end_at)

@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 from main.settings.settings import BASE_DIR
 from .tasks import process_csv_to_persist, generate_file
-from .models import CsvFile, CsvRecords
+from .models import CsvFile
 from celery.result import AsyncResult
 
 # Create your views here.
@@ -43,14 +43,40 @@ class UploadView(View):
 class JobsView(View):
 
     def get(self, request, *args, **kwargs):
+        # if file name present, it is download call
+        if request.GET.get('filename', None):
+            filename = request.GET.get("filename", None)
+
+            if filename:
+                try:
+                    f = open(filename)
+                except:
+                    return HttpResponseForbidden()
+                else:
+                    response = HttpResponse(f, content_type='text/csv')
+                    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+                finally:
+                    if os.path.exists(filename):
+                        os.remove(filename)
+                return response
+
+        # if task id present, it is polling call
         if request.GET.get("taskId", None):
             task_id = request.GET.get("taskId")
-            # filename = request.GET.get("filename")
-
-            result = generate_file.AsyncResult(task_id)
-            if result.ready():
-                return JsonResponse({"message": 'ready', "status": "OK"})
-            return JsonResponse({"message": 'not ready', "status": "OK"})
+            try:
+                result = generate_file.AsyncResult(task_id)
+                if result.ready():
+                    return HttpResponse(json.dumps({"message": 'ready',
+                                                    "task_id": task_id,
+                                                    "filename": result.get(),
+                                                    "status": "OK"}))
+                return JsonResponse({"message": 'not ready',
+                                     "task_id": task_id,
+                                     "status": "OK"})
+            except Exception:
+                return JsonResponse({"message": 'not ready',
+                                     "task_id": task_id,
+                                     "status": "OK"})
 
         # if not ajax request just render the file
         context = {}
@@ -77,7 +103,7 @@ class JobsView(View):
             temp_dir = BASE_DIR + '/media/csv_files/'
             filename = temp_dir + 'JOB-' + str(csf.pk) + '-' + str(datetime.now().timestamp()) + '.csv'
 
-            task = generate_file.delay(job_id, temp_dir, filename, range_from, range_to)
+            task = generate_file.delay(job_id, filename, range_from, range_to)
             return JsonResponse({"task_id": str(task.task_id), "filename": filename, "status": "OK"})
         except Exception:
             return JsonResponse({"message": "Unable to download", "status": "ERROR"})
