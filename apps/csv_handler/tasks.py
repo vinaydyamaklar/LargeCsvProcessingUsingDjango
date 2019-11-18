@@ -10,7 +10,7 @@ from apps.csv_handler.models import CsvRecords, CsvFile
 def generate_file(job_id, filename, start_from, end_at):
     job = CsvFile.objects.filter(pk=int(job_id)).first()
 
-    csv_records = CsvRecords.objects.filter(file=job, range__gte=start_from, range__lte=end_at)
+    csv_records = CsvRecords.objects.filter(file=job, range__range=(start_from, end_at))
     with open(filename, "w+", encoding="utf8", errors='ignore') as f:
         writer = csv.writer(f, dialect=csv.excel)
         fields = json.loads(job.fields_str)
@@ -98,10 +98,3 @@ def read_csv(file_name, fields, rows, row_count):
         return True, fields, rows, row_count
     except Exception:
         return False, fields, rows, row_count
-
-
-def write_csv(file_name, records):
-    try:
-        pass
-    except Exception:
-        pass
