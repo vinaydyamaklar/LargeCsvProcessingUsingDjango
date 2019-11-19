@@ -46,7 +46,7 @@ var uploadId = null;
 var isLastChunk = false;
 
 /*
-* On submit start Process
+* On submit start Process sen 1st chunk to server
 */
 function processFile() {
     var file = $("#file_input").prop('files'); // This is your file object
@@ -80,7 +80,9 @@ function send(file, start, end) {
     if (size - end < 0) {
         end = size;
     }
+
     if (end < size) {
+        /*if file still exist, on response, send 2nd, 3rd... chunks to server*/
         xhr.onreadystatechange = function () {
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 var response = JSON.parse(xhr.responseText);
@@ -93,6 +95,7 @@ function send(file, start, end) {
             }
         }
     } else {
+        /*if fall but one chunks sent, on response sending last chunk to server*/
         xhr.onreadystatechange = function () {
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 var response = JSON.parse(xhr.responseText);
