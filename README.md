@@ -1,5 +1,4 @@
-# Large Csv file upload, processing & download using HTML5 File API, celery & python3 with django framework
-An admin dashboard can be opening by appending **/admin** at the end of the domain URL.
+# Large Csv file upload, processing & download using HTML5 file API, celery with rabbit MQ & python3 with django framework
 
 #### Structure
 * **models.py:** Where all models live.
