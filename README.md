@@ -1,4 +1,4 @@
-# Large Csv file upload, Processing & Download Using Django
+# Large Csv file upload, processing & download using HTML5 File API, celery & python3 with django framework
 An admin dashboard can be opening by appending **/admin** at the end of the domain URL.
 
 #### Structure
